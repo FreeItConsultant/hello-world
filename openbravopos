@@ -1,12 +1,14 @@
-java
+Java
 
-jdbc
+In mint comes already pre installed when you select the 3rd party software at the installation
+
+JDBC
+
+Download from oficial site dev.mysql 
+copy to /usr/share/java
+give +x permission to de *.bin.jar file
 
 SQL
-
-https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/
-
-basic installation on Linux
 
     sudo apt-get update sudo apt-get install mysql-server
 
@@ -25,7 +27,6 @@ Start the mysql shell
     /usr/bin/mysql -u root -p
 
 Set the root password
-Enter the following command in the mysql shell, replace password with your new password:
 
     UPDATE mysql.user SET Password = PASSWORD(‘password’) WHERE User = ‘root’;
 
@@ -33,30 +34,21 @@ Enter the following command in the mysql shell, replace password with your new p
 
     FLUSH PRIVILEGES;
 
-Create a database
-There is a difference between a database server and a database, even though those terms are often used interchangeably. MySQL is a database server, meaning tracks databases and controls access to them. The database stores the data, and it is the database that applications are trying to access when the interact with MySQL.
-Some applications create a database as part of their setup process, but others require you to create a database yourself and tell the application about it.
-To create a database, log into the mysql shell and run the following command, replacing demodb with the name of the database that you want to create:
+Create a database & user
 
     CREATE DATABASE demodb;
-
-The database is created. You can verify its creation by running a query to list all databases. The following example shows the query and example output:
 
     SHOW DATABASES;
 
     CREATE USER 'finley'@'localhost' IDENTIFIED BY 'password';
 
-When you make changes to the user table in the mysql database, tell MySQL to read the changes by flushing the privileges, as follows:
+When you make changes to the user table in the mysql database, 
 
     FLUSH PRIVILEGES;
 
 Grant database user permissions
-Right after you create a new user, it has no privileges. The user can log in, but it can’t be used to make any database changes.
-Give the user full permissions for your new database by running the following command:
 
     GRANT ALL PRIVILEGES ON demodb.* to demouser@localhost;
-
-Flush the privileges to make the change official by running the following command:
 
     FLUSH PRIVILEGES;
 
@@ -79,17 +71,3 @@ You will find the user table, now let's see its fields:
     mysql> describe user;
 
     SELECT User, Host FROM mysql.user;
-
-The following list describes the parts of that command:
-
-SELECT tells MySQL that you are asking for data.
-User, Host, tells MySQL what fields you want it to look in. Fields are categories for the data in a table. In this case you are looking for the username, the host associated with the username, and the encrypted password entry.
-FROM mysql.user “ tells MySQL to get the data from the mysql database and the user table.
-
-Users are associated with a host, specifically, the host to which they connect. The root user in this example is defined for localhost, for the IP address of localhost, and the hostname of the server (demohost in this example). You’ll usually need to set a user for only one host, the one from which you typically connect.
-If you’re running your application on the same computer as the MySQL server the host that it connects to by default is localhost. Any new users that you create must have localhost in their host field.
-If your application connects remotely, the host entry that MySQL looks for is the IP address or DNS hostname of the remote computer (the one from which the client is coming).
-A special value for the host is %, as you can see in the preceding output for the blank, or anonymous, user (see the following section). The % symbol is a wildcard ard that applies to any host value.
-Anonymous users
-Entry has a host value but no username or password. That’s an anonymous user. When a client connects with no username specified, it’s trying to connect as an anonymous user.
-You usually don’t want any anonymous users, but some MySQL installations include one by default. If you see one, you should either delete the user (refer to the username with empty quotes, like ‘’) or set a password for it.
